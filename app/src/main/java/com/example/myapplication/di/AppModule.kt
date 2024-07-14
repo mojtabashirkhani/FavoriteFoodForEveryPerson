@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.room.Room
 import com.example.myapplication.DB_NAME
 import com.example.myapplication.database.FavoriteFoodDatabase
+import com.example.myapplication.database.dao.PersonFoodDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -12,7 +13,7 @@ import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
 @Module
-object DatabaseModule {
+object AppModule {
     @Provides
     @Singleton
     fun provideRoomDatabase(application: Application): FavoriteFoodDatabase {
@@ -22,8 +23,9 @@ object DatabaseModule {
             .build()
     }
 
-    /*@Provides
-    fun provideProductDao(db: ProductDatabase): ProductDao {
-        return db.productDao()
-    }*/
+    @Provides
+    fun providePersonFoodDao(db: FavoriteFoodDatabase): PersonFoodDao {
+        return db.personFoodDao()
+    }
+
 }
