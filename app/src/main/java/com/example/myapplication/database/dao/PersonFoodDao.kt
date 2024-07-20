@@ -10,6 +10,7 @@ import com.example.myapplication.database.model.FoodEntity
 import com.example.myapplication.database.model.PersonEntity
 import com.example.myapplication.database.model.PersonFoodCrossRef
 import com.example.myapplication.database.model.PersonWithFoods
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface PersonFoodDao {
@@ -33,14 +34,14 @@ interface PersonFoodDao {
 
     @Transaction
     @Query("SELECT * FROM Person WHERE id = :personId")
-    suspend fun getPersonWithFoods(personId: Long): List<PersonWithFoods>
+    fun getPersonWithFoods(personId: Long): Flow<List<PersonWithFoods>>
 
     @Transaction
     @Query("SELECT * FROM Person")
-    suspend fun getAllPersonsWithFoods(): List<PersonWithFoods>
+    fun getAllPersonsWithFoods(): Flow<List<PersonWithFoods>>
 
     @Query("SELECT * FROM Food")
-    suspend fun getAllFoods(): List<FoodEntity>
+    fun getAllFoods(): Flow<List<FoodEntity>>
 
     @Delete
     suspend fun deletePersonFoodCrossRef(crossRef: PersonFoodCrossRef)

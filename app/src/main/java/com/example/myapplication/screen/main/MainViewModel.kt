@@ -14,6 +14,8 @@ import com.example.myapplication.domain.DeleteFavoriteFoodUseCase
 import com.example.myapplication.domain.GetAllFoodsUseCase
 import com.example.myapplication.domain.GetAllPersonsWithFoodsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -28,18 +30,31 @@ class MainViewModel @Inject constructor(
 
 ) : ViewModel() {
 
-    private val _personsWithFoods = MutableLiveData<List<PersonWithFoods>>()
-    val personsWithFoods: LiveData<List<PersonWithFoods>> get() = _personsWithFoods
+    private val _personsWithFoods = MutableStateFlow<List<PersonWithFoods>>(emptyList())
+    val personsWithFoods: StateFlow<List<PersonWithFoods>> = _personsWithFoods
 
-    private val _allFoods = MutableLiveData<List<FoodEntity>>()
-    val allFoods: LiveData<List<FoodEntity>> get() = _allFoods
+    private val _allFoods = MutableStateFlow<List<FoodEntity>>(emptyList())
+    val allFoods: StateFlow<List<FoodEntity>> = _allFoods
+
+    init {
+        viewModelScope.launch {
+            getAllPersonsWithFoodsUseCase().collect {
+                _personsWithFoods.value = it
+            }
+        }
+        viewModelScope.launch {
+            getAllFoodsUseCase().collect {
+                _allFoods.value = it
+            }
+        }
+    }
 
     fun addPerson(name: String) {
         if (name.isNotEmpty()) {
             viewModelScope.launch {
                 val person = PersonEntity(name = name)
                 addPersonUseCase(person)
-                loadPersonsWithFoods()
+                refreshPersonsWithFoods()
             }
         }
     }
@@ -49,55 +64,56 @@ class MainViewModel @Inject constructor(
             viewModelScope.launch {
                 val food = FoodEntity(name = name)
                 addFoodUseCase(food)
-                loadAllFoods()
+                refreshAllFoods()
             }
         }
     }
 
-    fun loadPersonsWithFoods() {
+     fun refreshPersonsWithFoods() {
         viewModelScope.launch {
-            _personsWithFoods.value = getAllPersonsWithFoodsUseCase()
+            getAllPersonsWithFoodsUseCase().collect {
+                _personsWithFoods.value = it
+            }
         }
     }
 
-    fun loadAllFoods() {
+     fun refreshAllFoods() {
         viewModelScope.launch {
-            _allFoods.value = getAllFoodsUseCase()
+            getAllFoodsUseCase().collect {
+                _allFoods.value = it
+            }
         }
     }
 
     fun addFavoriteFood(personId: Long, foodId: Long) {
         viewModelScope.launch {
             addFavoriteFoodUseCase(personId, foodId)
-            loadPersonsWithFoods()
+            refreshPersonsWithFoods()
         }
     }
 
     fun removeFavoriteFood(personId: Long, foodId: Long) {
         viewModelScope.launch {
             deleteFavoriteFoodUseCase(personId, foodId)
-            loadPersonsWithFoods()
+            refreshPersonsWithFoods()
         }
     }
 
     fun updateFavoriteFoods(personId: Long, selectedFoods: List<FoodEntity>) {
         viewModelScope.launch {
-            // Get current favorite foods
-            val personWithFoods = getAllPersonsWithFoodsUseCase().firstOrNull { it.person.id == personId }
+            val personWithFoods = _personsWithFoods.value.firstOrNull { it.person.id == personId }
             personWithFoods?.favoriteFoods?.forEach { food ->
                 if (!selectedFoods.contains(food)) {
                     // Remove food that is no longer selected
                     removeFavoriteFood(personId, food.id)
                 }
             }
-
-            // Add new selected foods
             selectedFoods.forEach { food ->
-                if (personWithFoods?.favoriteFoods?.contains(food) == true) {
+                if (personWithFoods?.favoriteFoods?.contains(food) != true) {
                     addFavoriteFood(personId, food.id)
                 }
             }
-            loadPersonsWithFoods()
+            refreshPersonsWithFoods()
         }
     }
 }

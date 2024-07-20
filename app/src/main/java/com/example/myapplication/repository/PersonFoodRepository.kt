@@ -11,9 +11,9 @@ class PersonFoodRepository @Inject constructor(private val personFoodDao: Person
 
     suspend fun insertFood(food: FoodEntity) = personFoodDao.insertFood(food)
 
-    suspend fun getAllPersonsWithFoods() = personFoodDao.getAllPersonsWithFoods()
+    fun getAllPersonsWithFoods() = personFoodDao.getAllPersonsWithFoods()
 
-    suspend fun getAllFoods() = personFoodDao.getAllFoods()
+    fun getAllFoods() = personFoodDao.getAllFoods()
 
     suspend fun insertPersonFoodCrossRef(crossRef: PersonFoodCrossRef) = personFoodDao.insertPersonFoodCrossRef(crossRef)
 

@@ -19,6 +19,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
@@ -42,11 +43,11 @@ import kotlinx.coroutines.launch
 fun PersonListScreen() {
     val mainViewModel: MainViewModel = hiltViewModel()
 
-    val personsWithFoods by mainViewModel.personsWithFoods.observeAsState(emptyList())
+    val personsWithFoods by mainViewModel.personsWithFoods.collectAsState()
 
     LaunchedEffect(Unit) {
-        mainViewModel.loadPersonsWithFoods()
-        mainViewModel.loadAllFoods()
+        mainViewModel.refreshPersonsWithFoods()
+        mainViewModel.refreshAllFoods()
     }
 
     LazyColumn {
@@ -109,7 +110,7 @@ fun MultiSelectDropdown(
 
 @Composable
 fun PersonItem(personWithFoods: PersonWithFoods, mainViewModel: MainViewModel) {
-    val allFoods by mainViewModel.allFoods.observeAsState(emptyList())
+    val allFoods by mainViewModel.allFoods.collectAsState()
     var selectedFoods by remember { mutableStateOf(personWithFoods.favoriteFoods) }
 
     Column(modifier = Modifier.padding(16.dp)) {
