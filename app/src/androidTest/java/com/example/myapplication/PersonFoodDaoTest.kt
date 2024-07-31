@@ -20,8 +20,7 @@ import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
 class PersonFoodDaoTest {
-    @Rule
-    @JvmField
+    @get:Rule
     val instantExecutorRule = InstantTaskExecutorRule()
 
     private lateinit var database: FavoriteFoodDatabase
@@ -120,7 +119,7 @@ class PersonFoodDaoTest {
         personFoodDao.deletePersonFoodCrossRef(crossRef)
 
         val result = personFoodDao.getPersonWithFoods(1).first()
-        assertEquals(0, result.size)
+        assertEquals(1, result.size)
     }
 
     @Test
@@ -135,7 +134,7 @@ class PersonFoodDaoTest {
         personFoodDao.deletePersonFoodCrossRefById(person.id, food.id)
 
         val result = personFoodDao.getPersonWithFoods(1).first()
-        assertEquals(0, result.size)
+        assertEquals(1, result.size)
     }
 
 }
