@@ -4,7 +4,6 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import com.example.myapplication.MainActivity
-import com.example.myapplication.screen.addFood.AddFoodScreen
 import com.example.myapplication.screen.personList.PersonListScreen
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
