@@ -9,6 +9,7 @@ import com.example.myapplication.database.dao.PersonFoodDao
 import com.example.myapplication.database.model.FoodEntity
 import com.example.myapplication.database.model.PersonEntity
 import com.example.myapplication.database.model.PersonFoodCrossRef
+import dagger.hilt.android.testing.HiltAndroidTest
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
@@ -17,13 +18,18 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import javax.inject.Inject
+import javax.inject.Named
 
 @RunWith(AndroidJUnit4::class)
+@HiltAndroidTest
 class PersonFoodDaoTest {
     @get:Rule
     val instantExecutorRule = InstantTaskExecutorRule()
 
-    private lateinit var database: FavoriteFoodDatabase
+    @Inject
+    @Named("test_db")
+    lateinit var database: FavoriteFoodDatabase
     private lateinit var personFoodDao: PersonFoodDao
 
 
