@@ -1,4 +1,4 @@
-package com.example.myapplication
+package com.example.myapplication.db
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.room.Room

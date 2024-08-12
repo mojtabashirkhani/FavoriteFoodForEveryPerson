@@ -1,4 +1,4 @@
-package com.example.myapplication
+package com.example.myapplication.di
 
 import android.app.Application
 import android.content.Context
