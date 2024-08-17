@@ -34,6 +34,7 @@ import com.example.myapplication.database.dao.PersonFoodDao
 import com.example.myapplication.database.model.FoodEntity
 import com.example.myapplication.database.model.PersonFoodCrossRef
 import com.example.myapplication.database.model.PersonWithFoods
+import com.example.myapplication.screen.main.MainViewIntent
 import com.example.myapplication.screen.main.MainViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -43,15 +44,15 @@ import kotlinx.coroutines.launch
 fun PersonListScreen() {
     val mainViewModel: MainViewModel = hiltViewModel()
 
-    val personsWithFoods by mainViewModel.personsWithFoods.collectAsState()
+    val viewState by mainViewModel.viewState.collectAsState()
 
     LaunchedEffect(Unit) {
-        mainViewModel.refreshPersonsWithFoods()
-        mainViewModel.refreshAllFoods()
+        mainViewModel.processIntent(MainViewIntent.LoadPersonsWithFoods)
+        mainViewModel.processIntent(MainViewIntent.LoadAllFoods)
     }
 
     LazyColumn {
-        items(personsWithFoods) { personWithFoods ->
+        items(viewState.personsWithFoods) { personWithFoods ->
             PersonItem(personWithFoods, mainViewModel)
         }
     }
@@ -110,7 +111,7 @@ fun MultiSelectDropdown(
 
 @Composable
 fun PersonItem(personWithFoods: PersonWithFoods, mainViewModel: MainViewModel) {
-    val allFoods by mainViewModel.allFoods.collectAsState()
+    val viewState by mainViewModel.viewState.collectAsState()
     var selectedFoods by remember { mutableStateOf(personWithFoods.favoriteFoods) }
 
     Column(modifier = Modifier.padding(16.dp)) {
@@ -118,7 +119,7 @@ fun PersonItem(personWithFoods: PersonWithFoods, mainViewModel: MainViewModel) {
 
         MultiSelectDropdown(
             label = "Select Favorite Foods",
-            options = allFoods,
+            options = viewState.allFoods,
             selectedOptions = selectedFoods,
             onSelectionChange = { food, isSelected ->
                 selectedFoods = if (isSelected) {
@@ -130,7 +131,7 @@ fun PersonItem(personWithFoods: PersonWithFoods, mainViewModel: MainViewModel) {
         )
 
         Button(onClick = {
-            mainViewModel.updateFavoriteFoods(personWithFoods.person.id, selectedFoods)
+            mainViewModel.processIntent(MainViewIntent.UpdateFavoriteFoods(personWithFoods.person.id, selectedFoods))
         }) {
             Text("Update Favorites")
         }

@@ -3,9 +3,11 @@ package com.example.myapplication.screen.addFood
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -15,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.myapplication.database.dao.PersonFoodDao
 import com.example.myapplication.database.model.FoodEntity
+import com.example.myapplication.screen.main.MainViewIntent
 import com.example.myapplication.screen.main.MainViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -24,6 +27,7 @@ import kotlinx.coroutines.launch
 fun AddFoodScreen() {
     val mainViewModel: MainViewModel = hiltViewModel()
 
+    val viewState by mainViewModel.viewState.collectAsState()
     var name by remember { mutableStateOf("") }
 
     Column(modifier = Modifier.padding(16.dp)) {
@@ -33,10 +37,13 @@ fun AddFoodScreen() {
             label = { Text("Food Name") }
         )
         Button(onClick = {
-            mainViewModel.addFood(name)
+            mainViewModel.processIntent(MainViewIntent.AddFood(name))
             name = ""
         }) {
             Text("Add Food")
+        }
+        viewState.error?.let {
+            Text(text = it, color = MaterialTheme.colorScheme.error)
         }
     }
 }

@@ -14,8 +14,10 @@ import com.example.myapplication.domain.DeleteFavoriteFoodUseCase
 import com.example.myapplication.domain.GetAllFoodsUseCase
 import com.example.myapplication.domain.GetAllPersonsWithFoodsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -30,90 +32,133 @@ class MainViewModel @Inject constructor(
 
 ) : ViewModel() {
 
-    private val _personsWithFoods = MutableStateFlow<List<PersonWithFoods>>(emptyList())
-    val personsWithFoods: StateFlow<List<PersonWithFoods>> = _personsWithFoods
+    private val _viewState = MutableStateFlow(MainViewState())
+    val viewState: StateFlow<MainViewState> = _viewState
 
-    private val _allFoods = MutableStateFlow<List<FoodEntity>>(emptyList())
-    val allFoods: StateFlow<List<FoodEntity>> = _allFoods
+    private val _viewEffect = Channel<MainViewEffect>()
+    val viewEffect = _viewEffect.receiveAsFlow()
 
     init {
-        viewModelScope.launch {
-            getAllPersonsWithFoodsUseCase().collect {
-                _personsWithFoods.value = it
-            }
+        processIntent(MainViewIntent.LoadPersonsWithFoods)
+        processIntent(MainViewIntent.LoadAllFoods)
+    }
+
+    fun processIntent(intent: MainViewIntent) {
+        when (intent) {
+            is MainViewIntent.LoadPersonsWithFoods -> loadPersonsWithFoods()
+            is MainViewIntent.LoadAllFoods -> loadAllFoods()
+            is MainViewIntent.AddPerson -> addPerson(intent.name)
+            is MainViewIntent.AddFood -> addFood(intent.name)
+            is MainViewIntent.AddFavoriteFood -> addFavoriteFood(intent.personId, intent.foodId)
+            is MainViewIntent.RemoveFavoriteFood -> removeFavoriteFood(intent.personId, intent.foodId)
+            is MainViewIntent.UpdateFavoriteFoods -> updateFavoriteFoods(intent.personId, intent.selectedFoods)
         }
+    }
+
+    private fun loadPersonsWithFoods() {
         viewModelScope.launch {
-            getAllFoodsUseCase().collect {
-                _allFoods.value = it
+            _viewState.value = _viewState.value.copy(isLoading = true)
+            try {
+                getAllPersonsWithFoodsUseCase().collect { personsWithFoods ->
+                    _viewState.value = _viewState.value.copy(personsWithFoods = personsWithFoods, isLoading = false)
+                }
+            } catch (e: Exception) {
+                _viewState.value = _viewState.value.copy(isLoading = false, error = e.message)
+                _viewEffect.send(MainViewEffect.ShowError("Failed to load persons with foods"))
             }
         }
     }
 
-    fun addPerson(name: String) {
+    private fun loadAllFoods() {
+        viewModelScope.launch {
+            _viewState.value = _viewState.value.copy(isLoading = true)
+            try {
+                getAllFoodsUseCase().collect { foods ->
+                    _viewState.value = _viewState.value.copy(allFoods = foods, isLoading = false)
+                }
+            } catch (e: Exception) {
+                _viewState.value = _viewState.value.copy(isLoading = false, error = e.message)
+                _viewEffect.send(MainViewEffect.ShowError("Failed to load foods"))
+            }
+        }
+    }
+
+    private fun addPerson(name: String) {
         if (name.isNotEmpty()) {
             viewModelScope.launch {
-                val person = PersonEntity(name = name)
-                addPersonUseCase(person)
+                try {
+                    val person = PersonEntity(name = name)
+                    addPersonUseCase(person)
+                    refreshPersonsWithFoods()
+                } catch (e: Exception) {
+                    _viewEffect.send(MainViewEffect.ShowError("Failed to add person"))
+                }
+            }
+        }
+    }
+
+    private fun addFood(name: String) {
+        if (name.isNotEmpty()) {
+            viewModelScope.launch {
+                try {
+                    val food = FoodEntity(name = name)
+                    addFoodUseCase(food)
+                    refreshAllFoods()
+                } catch (e: Exception) {
+                    _viewEffect.send(MainViewEffect.ShowError("Failed to add food"))
+                }
+            }
+        }
+    }
+
+    private fun refreshPersonsWithFoods() {
+        processIntent(MainViewIntent.LoadPersonsWithFoods)
+    }
+
+    private fun refreshAllFoods() {
+        processIntent(MainViewIntent.LoadAllFoods)
+    }
+
+    private fun addFavoriteFood(personId: Long, foodId: Long) {
+        viewModelScope.launch {
+            try {
+                addFavoriteFoodUseCase(personId, foodId)
                 refreshPersonsWithFoods()
+            } catch (e: Exception) {
+                _viewEffect.send(MainViewEffect.ShowError("Failed to add favorite food"))
             }
         }
     }
 
-    fun addFood(name: String) {
-        if (name.isNotEmpty()) {
-            viewModelScope.launch {
-                val food = FoodEntity(name = name)
-                addFoodUseCase(food)
-                refreshAllFoods()
+    private fun removeFavoriteFood(personId: Long, foodId: Long) {
+        viewModelScope.launch {
+            try {
+                deleteFavoriteFoodUseCase(personId, foodId)
+                refreshPersonsWithFoods()
+            } catch (e: Exception) {
+                _viewEffect.send(MainViewEffect.ShowError("Failed to remove favorite food"))
             }
         }
     }
 
-     fun refreshPersonsWithFoods() {
+    private fun updateFavoriteFoods(personId: Long, selectedFoods: List<FoodEntity>) {
         viewModelScope.launch {
-            getAllPersonsWithFoodsUseCase().collect {
-                _personsWithFoods.value = it
-            }
-        }
-    }
-
-     fun refreshAllFoods() {
-        viewModelScope.launch {
-            getAllFoodsUseCase().collect {
-                _allFoods.value = it
-            }
-        }
-    }
-
-    fun addFavoriteFood(personId: Long, foodId: Long) {
-        viewModelScope.launch {
-            addFavoriteFoodUseCase(personId, foodId)
-            refreshPersonsWithFoods()
-        }
-    }
-
-    fun removeFavoriteFood(personId: Long, foodId: Long) {
-        viewModelScope.launch {
-            deleteFavoriteFoodUseCase(personId, foodId)
-            refreshPersonsWithFoods()
-        }
-    }
-
-    fun updateFavoriteFoods(personId: Long, selectedFoods: List<FoodEntity>) {
-        viewModelScope.launch {
-            val personWithFoods = _personsWithFoods.value.firstOrNull { it.person.id == personId }
-            personWithFoods?.favoriteFoods?.forEach { food ->
-                if (!selectedFoods.contains(food)) {
-                    // Remove food that is no longer selected
-                    removeFavoriteFood(personId, food.id)
+            try {
+                val personWithFoods = _viewState.value.personsWithFoods.firstOrNull { it.person.id == personId }
+                personWithFoods?.favoriteFoods?.forEach { food ->
+                    if (!selectedFoods.contains(food)) {
+                        removeFavoriteFood(personId, food.id)
+                    }
                 }
-            }
-            selectedFoods.forEach { food ->
-                if (personWithFoods?.favoriteFoods?.contains(food) != true) {
-                    addFavoriteFood(personId, food.id)
+                selectedFoods.forEach { food ->
+                    if (personWithFoods?.favoriteFoods?.contains(food) != true) {
+                        addFavoriteFood(personId, food.id)
+                    }
                 }
+                refreshPersonsWithFoods()
+            } catch (e: Exception) {
+                _viewEffect.send(MainViewEffect.ShowError("Failed to update favorite foods"))
             }
-            refreshPersonsWithFoods()
         }
     }
 }
