@@ -18,6 +18,15 @@ The app uses MVVM [Model-View-ViewModel] architecture to have a unidirectional f
 
 ![image](https://miro.medium.com/v2/resize:fit:1100/format:webp/1*UNlTvPiF7VkcE3BOap6RRA.png)
 
+### Screenshots 
+
+#### Add Person Screen
+![image](https://drive.google.com/uc?export=view&id=1H12szxsc5dnENoXBSuGt8E1MTFqNpDNp)
+#### Add Food Screen
+![image](https://drive.google.com/uc?export=view&id=1Tgir7gvNrjCX8HjZvmCh4QPQPmId0Gu5)
+#### Persons Screen
+![image](https://drive.google.com/uc?export=view&id=1oyQTANH3Qkwu3pouyulcuF_pNc1R8MUN)
+
 ### Video
 [Watch the video on Google Drive](https://drive.google.com/uc?export=download&id=1aiP6WvLZ-GCnCkc7XQOH70wuMWS2kvFD)
 
