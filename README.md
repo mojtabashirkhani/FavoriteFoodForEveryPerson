@@ -19,5 +19,5 @@ The app uses MVVM [Model-View-ViewModel] architecture to have a unidirectional f
 ![image](https://miro.medium.com/v2/resize:fit:1100/format:webp/1*UNlTvPiF7VkcE3BOap6RRA.png)
 
 ### Video
-[![Watch the video]([https://i.sstatic.net/Vp2cE.png)](https://youtu.be/vt5fpE0bzSY](https://drive.google.com/file/d/1aiP6WvLZ-GCnCkc7XQOH70wuMWS2kvFD/view?usp=sharing))
+[![Watch the video](https://drive.google.com/file/d/1aiP6WvLZ-GCnCkc7XQOH70wuMWS2kvFD/view?usp=sharing)
 
