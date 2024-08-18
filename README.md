@@ -1,5 +1,5 @@
 # Favorite food for every person
-It is a simple application that is a example for many to many relation room database with hilt, compose and test
+It is a simple application that is an example for many to many relation room databases with MVI clean architecture, hilt, compose, and include room and compose end-to-end testing
 
 ### Libraries and tools
 
@@ -14,9 +14,9 @@ It is a simple application that is a example for many to many relation room data
 
 ### Architecture
 
-The app uses MVVM [Model-View-ViewModel] architecture to have a unidirectional flow of data, separation of concern, testability, and much more.
+The app uses MVI [Model-View-Intent] clean architecture and is refactored from MVVM to have a unidirectional flow of data, separation of concern, testability, and much more.
 
-![image](https://miro.medium.com/v2/resize:fit:1100/format:webp/1*UNlTvPiF7VkcE3BOap6RRA.png)
+![image]([https://miro.medium.com/v2/resize:fit:1100/format:webp/1*UNlTvPiF7VkcE3BOap6RRA.png](https://images.app.goo.gl/GUfwXxhsBwbvBK5t7))
 
 ### Screenshots 
 
