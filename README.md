@@ -3,7 +3,6 @@ This application serves as a comprehensive example demonstrating the implementat
 
 ### Libraries and tools
 
-+ [Navigation](https://developer.android.com/develop/ui/compose/navigation)
 + [Compose](https://developer.android.com/develop/ui/compose)
 + [Coroutine](https://developer.android.com/kotlin/coroutines)
 + [Flow](https://developer.android.com/kotlin/flow)
@@ -11,6 +10,9 @@ This application serves as a comprehensive example demonstrating the implementat
 + [RoomDB](https://developer.android.com/topic/libraries/architecture/room)
 + [Hilt](https://developer.android.com/training/dependency-injection/hilt-android)
 + [Material Design](https://developer.android.com/develop/ui/compose/designsystems/material3)
++ [Hilt-Testing](https://developer.android.com/training/dependency-injection/hilt-testing)
++ [Room-Testing](https://developer.android.com/training/data-storage/room/testing-db)
++ [Compose-Testing](https://developer.android.com/develop/ui/compose/testing)
 
 ### Architecture
 
