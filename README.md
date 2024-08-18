@@ -1,5 +1,5 @@
 # Favorite food for every person
-It is a simple application that is an example for many to many relation room databases with MVI clean architecture, hilt, compose, and include room and compose end-to-end testing
+This application serves as a comprehensive example demonstrating the implementation of a many-to-many relationship in a Room database using modern Android development practices. It showcases the integration of the MVI (Model-View-Intent) pattern within a Clean Architecture framework, leveraging Hilt for dependency injection and Jetpack Compose for the UI layer. The project also includes detailed examples of testing, featuring Room database testing with Hilt and end-to-end UI testing using Jetpack Compose. This app is designed to be a valuable reference for developers looking to build scalable, maintainable Android applications with advanced architecture patterns and testing strategies.
 
 ### Libraries and tools
 
