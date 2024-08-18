@@ -26,8 +26,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.myapplication.database.dao.PersonFoodDao
 import com.example.myapplication.screen.addFood.AddFoodScreen
 import com.example.myapplication.screen.addPerson.AddPersonScreen
 import com.example.myapplication.screen.personList.PersonListScreen

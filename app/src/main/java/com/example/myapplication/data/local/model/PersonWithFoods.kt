@@ -1,4 +1,4 @@
-package com.example.myapplication.database.model
+package com.example.myapplication.data.local.model
 
 import androidx.room.Embedded
 import androidx.room.Junction

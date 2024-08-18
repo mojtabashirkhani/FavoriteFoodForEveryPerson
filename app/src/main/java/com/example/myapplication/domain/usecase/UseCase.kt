@@ -1,6 +1,10 @@
-package com.example.myapplication.domain
+package com.example.myapplication.domain.usecase
 
-import com.example.myapplication.data.PersonFoodRepositoryImpl
+import com.example.myapplication.data.repositoryImpl.PersonFoodRepositoryImpl
+import com.example.myapplication.domain.model.Food
+import com.example.myapplication.domain.model.Person
+import com.example.myapplication.domain.model.PersonFoodCrossRef
+import com.example.myapplication.domain.model.PersonWithFoods
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 class GetAllPersonsWithFoodsUseCase @Inject constructor(private val repository: PersonFoodRepositoryImpl) {

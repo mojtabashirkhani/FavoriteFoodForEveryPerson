@@ -4,11 +4,11 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.example.myapplication.database.FavoriteFoodDatabase
-import com.example.myapplication.database.dao.PersonFoodDao
-import com.example.myapplication.database.model.FoodEntity
-import com.example.myapplication.database.model.PersonEntity
-import com.example.myapplication.database.model.PersonFoodCrossRefEntity
+import com.example.myapplication.data.local.FavoriteFoodDatabase
+import com.example.myapplication.data.local.dao.PersonFoodDao
+import com.example.myapplication.data.local.model.FoodEntity
+import com.example.myapplication.data.local.model.PersonEntity
+import com.example.myapplication.data.local.model.PersonFoodCrossRefEntity
 import dagger.hilt.android.testing.HiltAndroidTest
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.flow.first

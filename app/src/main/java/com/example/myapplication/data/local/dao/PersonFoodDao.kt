@@ -1,4 +1,4 @@
-package com.example.myapplication.database.dao
+package com.example.myapplication.data.local.dao
 
 import androidx.room.Dao
 import androidx.room.Delete
@@ -6,10 +6,10 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
-import com.example.myapplication.database.model.FoodEntity
-import com.example.myapplication.database.model.PersonEntity
-import com.example.myapplication.database.model.PersonFoodCrossRefEntity
-import com.example.myapplication.database.model.PersonWithFoods
+import com.example.myapplication.data.local.model.FoodEntity
+import com.example.myapplication.data.local.model.PersonEntity
+import com.example.myapplication.data.local.model.PersonFoodCrossRefEntity
+import com.example.myapplication.data.local.model.PersonWithFoods
 import kotlinx.coroutines.flow.Flow
 
 @Dao

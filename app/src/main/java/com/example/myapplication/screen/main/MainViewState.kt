@@ -1,7 +1,7 @@
 package com.example.myapplication.screen.main
 
-import com.example.myapplication.domain.Food
-import com.example.myapplication.domain.PersonWithFoods
+import com.example.myapplication.domain.model.Food
+import com.example.myapplication.domain.model.PersonWithFoods
 
 data class MainViewState(
     val personsWithFoods: List<PersonWithFoods> = emptyList(),

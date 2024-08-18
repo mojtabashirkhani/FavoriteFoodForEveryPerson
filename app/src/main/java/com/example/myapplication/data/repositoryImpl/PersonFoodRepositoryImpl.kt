@@ -1,19 +1,20 @@
-package com.example.myapplication.data
+package com.example.myapplication.data.repositoryImpl
 
-import com.example.myapplication.database.dao.PersonFoodDao
-import com.example.myapplication.database.model.FoodEntity
-import com.example.myapplication.database.model.PersonEntity
-import com.example.myapplication.database.model.PersonFoodCrossRefEntity
-import com.example.myapplication.domain.Food
-import com.example.myapplication.domain.Person
-import com.example.myapplication.domain.PersonFoodCrossRef
-import com.example.myapplication.domain.PersonFoodRepository
-import com.example.myapplication.domain.PersonWithFoods
+import com.example.myapplication.data.local.dao.PersonFoodDao
+import com.example.myapplication.data.local.model.FoodEntity
+import com.example.myapplication.data.local.model.PersonEntity
+import com.example.myapplication.data.local.model.PersonFoodCrossRefEntity
+import com.example.myapplication.domain.model.Food
+import com.example.myapplication.domain.model.Person
+import com.example.myapplication.domain.model.PersonFoodCrossRef
+import com.example.myapplication.domain.repository.PersonFoodRepository
+import com.example.myapplication.domain.model.PersonWithFoods
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-class PersonFoodRepositoryImpl @Inject constructor(private val personFoodDao: PersonFoodDao): PersonFoodRepository {
+class PersonFoodRepositoryImpl @Inject constructor(private val personFoodDao: PersonFoodDao):
+    PersonFoodRepository {
     override suspend fun insertPerson(person: Person) {
         val personEntity = PersonEntity(name = person.name)
         personFoodDao.insertPerson(personEntity)

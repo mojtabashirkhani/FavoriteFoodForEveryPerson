@@ -43,8 +43,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.myapplication.domain.Food
-import com.example.myapplication.domain.PersonWithFoods
+import com.example.myapplication.domain.model.Food
+import com.example.myapplication.domain.model.PersonWithFoods
 import com.example.myapplication.screen.main.MainViewIntent
 import com.example.myapplication.screen.main.MainViewModel
 

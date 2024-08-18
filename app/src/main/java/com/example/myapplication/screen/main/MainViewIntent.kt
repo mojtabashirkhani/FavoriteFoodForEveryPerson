@@ -1,6 +1,6 @@
 package com.example.myapplication.screen.main
 
-import com.example.myapplication.domain.Food
+import com.example.myapplication.domain.model.Food
 
 sealed class MainViewIntent {
     object LoadPersonsWithFoods : MainViewIntent()

@@ -2,7 +2,7 @@ package com.example.myapplication.di
 
 import android.content.Context
 import androidx.room.Room
-import com.example.myapplication.database.FavoriteFoodDatabase
+import com.example.myapplication.data.local.FavoriteFoodDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

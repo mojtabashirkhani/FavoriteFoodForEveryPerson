@@ -1,6 +1,9 @@
-package com.example.myapplication.domain
+package com.example.myapplication.domain.repository
 
-import com.example.myapplication.database.model.PersonFoodCrossRefEntity
+import com.example.myapplication.domain.model.Food
+import com.example.myapplication.domain.model.Person
+import com.example.myapplication.domain.model.PersonFoodCrossRef
+import com.example.myapplication.domain.model.PersonWithFoods
 import kotlinx.coroutines.flow.Flow
 
 interface PersonFoodRepository  {

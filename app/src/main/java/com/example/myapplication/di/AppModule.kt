@@ -3,8 +3,8 @@ package com.example.myapplication.di
 import android.app.Application
 import androidx.room.Room
 import com.example.myapplication.DB_NAME
-import com.example.myapplication.database.FavoriteFoodDatabase
-import com.example.myapplication.database.dao.PersonFoodDao
+import com.example.myapplication.data.local.FavoriteFoodDatabase
+import com.example.myapplication.data.local.dao.PersonFoodDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
