@@ -16,7 +16,7 @@ It is a simple application that is an example for many to many relation room dat
 
 The app uses MVI [Model-View-Intent] clean architecture and is refactored from MVVM to have a unidirectional flow of data, separation of concern, testability, and much more.
 
-![image]([https://miro.medium.com/v2/resize:fit:1100/format:webp/1*UNlTvPiF7VkcE3BOap6RRA.png](https://images.app.goo.gl/GUfwXxhsBwbvBK5t7))
+![image](https://miro.medium.com/v2/resize:fit:720/format:webp/1*GpLqAqpnFqP5Sh4jdZAkQw.png)
 
 ### Screenshots 
 
