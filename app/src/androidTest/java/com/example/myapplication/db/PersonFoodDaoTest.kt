@@ -8,7 +8,7 @@ import com.example.myapplication.database.FavoriteFoodDatabase
 import com.example.myapplication.database.dao.PersonFoodDao
 import com.example.myapplication.database.model.FoodEntity
 import com.example.myapplication.database.model.PersonEntity
-import com.example.myapplication.database.model.PersonFoodCrossRef
+import com.example.myapplication.database.model.PersonFoodCrossRefEntity
 import dagger.hilt.android.testing.HiltAndroidTest
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.flow.first
@@ -65,7 +65,7 @@ class PersonFoodDaoTest {
     fun testInsertPersonFoodCrossRef() = runTest {
         val person = PersonEntity(id = 1, name = "John Doe")
         val food = FoodEntity(id = 1, name = "Apple")
-        val crossRef = PersonFoodCrossRef(personId = 1, foodId = 1)
+        val crossRef = PersonFoodCrossRefEntity(personId = 1, foodId = 1)
 
         personFoodDao.insertPerson(person)
         personFoodDao.insertFood(food)
@@ -117,7 +117,7 @@ class PersonFoodDaoTest {
     fun testDeletePersonFoodCrossRef() = runTest {
         val person = PersonEntity(id = 1, name = "John Doe")
         val food = FoodEntity(id = 1, name = "Apple")
-        val crossRef = PersonFoodCrossRef(personId = 1, foodId = 1)
+        val crossRef = PersonFoodCrossRefEntity(personId = 1, foodId = 1)
 
         personFoodDao.insertPerson(person)
         personFoodDao.insertFood(food)
@@ -132,7 +132,7 @@ class PersonFoodDaoTest {
     fun testDeletePersonFoodCrossRefById() = runTest {
         val person = PersonEntity(id = 1, name = "John Doe")
         val food = FoodEntity(id = 1, name = "Apple")
-        val crossRef = PersonFoodCrossRef(personId = 1, foodId = 1)
+        val crossRef = PersonFoodCrossRefEntity(personId = 1, foodId = 1)
 
         personFoodDao.insertPerson(person)
         personFoodDao.insertFood(food)

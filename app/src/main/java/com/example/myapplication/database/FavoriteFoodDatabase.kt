@@ -6,10 +6,10 @@ import com.example.myapplication.DB_VERSION
 import com.example.myapplication.database.dao.PersonFoodDao
 import com.example.myapplication.database.model.FoodEntity
 import com.example.myapplication.database.model.PersonEntity
-import com.example.myapplication.database.model.PersonFoodCrossRef
+import com.example.myapplication.database.model.PersonFoodCrossRefEntity
 
 @Database(
-    entities = [PersonEntity::class, FoodEntity::class, PersonFoodCrossRef::class],
+    entities = [PersonEntity::class, FoodEntity::class, PersonFoodCrossRefEntity::class],
     version = DB_VERSION,
     exportSchema = false
 )

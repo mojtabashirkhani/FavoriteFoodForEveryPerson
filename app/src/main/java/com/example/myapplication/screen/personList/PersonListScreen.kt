@@ -30,15 +30,12 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -46,15 +43,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.myapplication.database.dao.PersonFoodDao
-import com.example.myapplication.database.model.FoodEntity
-import com.example.myapplication.database.model.PersonFoodCrossRef
-import com.example.myapplication.database.model.PersonWithFoods
+import com.example.myapplication.domain.Food
+import com.example.myapplication.domain.PersonWithFoods
 import com.example.myapplication.screen.main.MainViewIntent
 import com.example.myapplication.screen.main.MainViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+
 @Composable
 fun PersonListScreen() {
     val mainViewModel: MainViewModel = hiltViewModel()
@@ -101,9 +94,9 @@ fun PersonListScreen() {
 @Composable
 fun MultiSelectDropdown(
     label: String,
-    options: List<FoodEntity>,
-    selectedOptions: List<FoodEntity>,
-    onSelectionChange: (FoodEntity, Boolean) -> Unit
+    options: List<Food>,
+    selectedOptions: List<Food>,
+    onSelectionChange: (Food, Boolean) -> Unit
 ) {
     var expanded by remember { mutableStateOf(false) }
 
@@ -162,7 +155,7 @@ fun MultiSelectDropdown(
 @Composable
 fun PersonItem(personWithFoods: PersonWithFoods, mainViewModel: MainViewModel) {
     val viewState by mainViewModel.viewState.collectAsState()
-    var selectedFoods by remember { mutableStateOf(personWithFoods.favoriteFoods) }
+    var selectedFoods by remember { mutableStateOf(personWithFoods.foods) }
 
     Card(
         shape = RoundedCornerShape(8.dp),
@@ -196,7 +189,7 @@ fun PersonItem(personWithFoods: PersonWithFoods, mainViewModel: MainViewModel) {
                 onClick = {
                     mainViewModel.processIntent(
                         MainViewIntent.UpdateFavoriteFoods(
-                            personWithFoods.person.id, selectedFoods
+                            personWithFoods.person.id ?: -1L, selectedFoods
                         )
                     )
                 },

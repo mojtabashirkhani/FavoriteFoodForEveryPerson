@@ -8,7 +8,7 @@ import androidx.room.Query
 import androidx.room.Transaction
 import com.example.myapplication.database.model.FoodEntity
 import com.example.myapplication.database.model.PersonEntity
-import com.example.myapplication.database.model.PersonFoodCrossRef
+import com.example.myapplication.database.model.PersonFoodCrossRefEntity
 import com.example.myapplication.database.model.PersonWithFoods
 import kotlinx.coroutines.flow.Flow
 
@@ -21,14 +21,14 @@ interface PersonFoodDao {
     suspend fun insertFood(food: FoodEntity): Long
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertPersonFoodCrossRef(crossRef: PersonFoodCrossRef)
+    suspend fun insertPersonFoodCrossRef(crossRef: PersonFoodCrossRefEntity)
 
     @Transaction
     suspend fun insertPersonWithFoods(person: PersonEntity, foods: List<FoodEntity>) {
         val personId = insertPerson(person)
         foods.forEach { food ->
             val foodId = insertFood(food)
-            insertPersonFoodCrossRef(PersonFoodCrossRef(personId = personId, foodId = foodId))
+            insertPersonFoodCrossRef(PersonFoodCrossRefEntity(personId = personId, foodId = foodId))
         }
     }
 
@@ -44,7 +44,7 @@ interface PersonFoodDao {
     fun getAllFoods(): Flow<List<FoodEntity>>
 
     @Delete
-    suspend fun deletePersonFoodCrossRef(crossRef: PersonFoodCrossRef)
+    suspend fun deletePersonFoodCrossRef(crossRef: PersonFoodCrossRefEntity)
 
     @Query("DELETE FROM PersonFoodCrossRef WHERE personId = :personId AND foodId = :foodId")
     suspend fun deletePersonFoodCrossRefById(personId: Long, foodId: Long)

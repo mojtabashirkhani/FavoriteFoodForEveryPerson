@@ -1,6 +1,6 @@
 package com.example.myapplication.screen.main
 
-import com.example.myapplication.database.model.FoodEntity
+import com.example.myapplication.domain.Food
 
 sealed class MainViewIntent {
     object LoadPersonsWithFoods : MainViewIntent()
@@ -9,5 +9,5 @@ sealed class MainViewIntent {
     data class AddFood(val name: String) : MainViewIntent()
     data class AddFavoriteFood(val personId: Long, val foodId: Long) : MainViewIntent()
     data class RemoveFavoriteFood(val personId: Long, val foodId: Long) : MainViewIntent()
-    data class UpdateFavoriteFoods(val personId: Long, val selectedFoods: List<FoodEntity>) : MainViewIntent()
+    data class UpdateFavoriteFoods(val personId: Long, val selectedFoods: List<Food>) : MainViewIntent()
 }

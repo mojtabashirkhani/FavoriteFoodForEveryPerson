@@ -11,8 +11,10 @@ import com.example.myapplication.domain.AddFavoriteFoodUseCase
 import com.example.myapplication.domain.AddFoodUseCase
 import com.example.myapplication.domain.AddPersonUseCase
 import com.example.myapplication.domain.DeleteFavoriteFoodUseCase
+import com.example.myapplication.domain.Food
 import com.example.myapplication.domain.GetAllFoodsUseCase
 import com.example.myapplication.domain.GetAllPersonsWithFoodsUseCase
+import com.example.myapplication.domain.Person
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -87,7 +89,7 @@ class MainViewModel @Inject constructor(
         if (name.isNotEmpty()) {
             viewModelScope.launch {
                 try {
-                    val person = PersonEntity(name = name)
+                    val person = Person(name = name)
                     addPersonUseCase(person)
                     refreshPersonsWithFoods()
                 } catch (e: Exception) {
@@ -101,7 +103,7 @@ class MainViewModel @Inject constructor(
         if (name.isNotEmpty()) {
             viewModelScope.launch {
                 try {
-                    val food = FoodEntity(name = name)
+                    val food = Food(name = name)
                     addFoodUseCase(food)
                     refreshAllFoods()
                 } catch (e: Exception) {
@@ -141,18 +143,18 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    private fun updateFavoriteFoods(personId: Long, selectedFoods: List<FoodEntity>) {
+    private fun updateFavoriteFoods(personId: Long, selectedFoods: List<Food>) {
         viewModelScope.launch {
             try {
                 val personWithFoods = _viewState.value.personsWithFoods.firstOrNull { it.person.id == personId }
-                personWithFoods?.favoriteFoods?.forEach { food ->
+                personWithFoods?.foods?.forEach { food ->
                     if (!selectedFoods.contains(food)) {
-                        removeFavoriteFood(personId, food.id)
+                        removeFavoriteFood(personId, food.id ?: -1L)
                     }
                 }
                 selectedFoods.forEach { food ->
-                    if (personWithFoods?.favoriteFoods?.contains(food) != true) {
-                        addFavoriteFood(personId, food.id)
+                    if (personWithFoods?.foods?.contains(food) != true) {
+                        addFavoriteFood(personId, food.id ?: -1L)
                     }
                 }
                 refreshPersonsWithFoods()

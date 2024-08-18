@@ -11,7 +11,7 @@ import androidx.room.ForeignKey
         ForeignKey(entity = FoodEntity::class, parentColumns = ["id"], childColumns = ["foodId"])
     ]
 )
-data class PersonFoodCrossRef(
+data class PersonFoodCrossRefEntity(
     val personId: Long,
     val foodId: Long
 )
